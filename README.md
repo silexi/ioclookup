@@ -1,6 +1,8 @@
 # IOCLookup
 IOC Lookup is an indicator database. The aim of the project is to present all indicators to cyber security researchers under one roof. This project is still development. You can support me by checking the codes.
 
+![screenshot](https://i.ibb.co/YyKDJtX/indir.png)
+
 
 ## Installation
 
