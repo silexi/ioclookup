@@ -8,7 +8,7 @@ include("classes/ImageResultsProvider.php");
     }else{
         exit("please letter search > 0");
     }
-    $type = isset($_GET["type"]) ? $_GET["type"] : "sites";
+    $type = isset($_GET["type"]) ? $_GET["type"] : "all";
     $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 ?>
 <!DOCTYPE HTML>
@@ -44,28 +44,28 @@ include("classes/ImageResultsProvider.php");
             </div>
             <div class="tabsContainer">
                 <ul class="tabList">
-                    <li class="<?php echo $type == 'sites' ? 'active' : '' ?>">
-                        <a href="<?php echo "search.php?term=$term&type=sites"; ?>">
+                    <li class="<?php echo $type == 'all' ? 'active' : '' ?>">
+                        <a href="<?php echo "search.php?term=$term&type=all"; ?>">
                             All
                         </a>
                     </li>
-                    <li class="<?php echo $type == 'images' ? 'active' : '' ?>">
-                        <a href="<?php echo "search.php?term=$term&type=images"; ?>">
+                    <li class="<?php echo $type == 'ipaddress' ? 'active' : '' ?>">
+                        <a href="<?php echo "search.php?term=$term&type=ipaddress"; ?>">
                             IP Address
                         </a>
                     </li>
-                    <li class="<?php echo $type == 'images' ? 'active' : '' ?>">
-                        <a href="<?php echo "search.php?term=$term&type=images"; ?>">
+                    <li class="<?php echo $type == 'domain' ? 'active' : '' ?>">
+                        <a href="<?php echo "search.php?term=$term&type=domain"; ?>">
                             Domain
                         </a>
                     </li>
-                    <li class="<?php echo $type == 'images' ? 'active' : '' ?>">
-                        <a href="<?php echo "search.php?term=$term&type=images"; ?>">
+                    <li class="<?php echo $type == 'mx' ? 'active' : '' ?>">
+                        <a href="<?php echo "search.php?term=$term&type=mx"; ?>">
                             MX
                         </a>
                     </li>
-                    <li class="<?php echo $type == 'images' ? 'active' : '' ?>">
-                        <a href="<?php echo "search.php?term=$term&type=images"; ?>">
+                    <li class="<?php echo $type == 'hash' ? 'active' : '' ?>">
+                        <a href="<?php echo "search.php?term=$term&type=hash"; ?>">
                             Hash
                         </a>
                     </li>
@@ -74,18 +74,49 @@ include("classes/ImageResultsProvider.php");
         </div>
         <div class="mainResultsSection">
             <?php
-                if($type == "sites"){
-                    $resultsProvider = new SiteResultsProvider($con);
-                    $pageLimit = 20;
-                }else{
-                    $resultsProvider = new ImageResultsProvider($con);
-                    $pageLimit = 30;
-                }
+                // if($type == "sites"){
+                //     $resultsProvider = new SiteResultsProvider($con);
+                //     $pageLimit = 20;
+                // }else{
+                //     $resultsProvider = new ImageResultsProvider($con);
+                //     $pageLimit = 30;
+                // }
+                $results = getFileHashReputation($term);
+                echo "<div class='siteResults'><br>";
+                $url = $results['Virustotal'];
+                $title = "Virustotal";
+                $description = "Virustotal Result";
+                echo"
+                        <div class='resultContainer'>
+                            <h3 class='title'>
+                                <a class='result' href='$url'>
+                                    $title
+                                </a>
+                            </h3>
+                            <span class='url'>$url</span>
+                            <span class='description'>$description</span>
+                        </div>
+                    ";
+                $title = "IBM X-Force";
+                $url = $results[$title];
+                $description = "$title Result";
+                echo"
+                        <div class='resultContainer'>
+                            <h3 class='title'>
+                                <a class='result' href='$url'>
+                                    $title
+                                </a>
+                            </h3>
+                            <span class='url'>$url</span>
+                            <span class='description'>$description</span>
+                        </div>
+                    ";
+                echo "</div>";
 
-                $numResults = $resultsProvider->getNumResults($term);
+                // $numResults = $resultsProvider->getNumResults($term);
                 #echo "<p class='resultsCount'>About $numResults results</p>"; DÜZELT BİTİNCE
                 echo "<p class='resultsCount'><b>".detectInput($term)."</b></p>";
-                echo $resultsProvider->getResultsHtml($page, $pageLimit, $term);
+                // echo $resultsProvider->getResultsHtml($page, $pageLimit, $term);
             ?>
         </div>
         <!--
