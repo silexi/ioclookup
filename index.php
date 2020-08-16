@@ -31,9 +31,6 @@
                     <input type="submit" class="searchButton" value="Search">
                 </form>
             </div>
-
-                
-
             <div id="dialog" style="visibility: hidden">
                 <div id="dialog-bg">
                     <div id="dialog-title">Latest Updates</div>
@@ -41,7 +38,7 @@
 
                         <!-- Buttons, both options close the window in this demo -->
                        <div id="dialog-buttons">
-                       <a href="./search.php?type=sites&term=%40ioclookup.com" class="large green button" onclick="return hideModal();">Lets start test!</a>
+                       <a href="./search.php?term=7c401bde8cafc5b745b9f65effbd588f" class="large green button" onclick="return hideModal();">Lets start test!</a>
                        <a href="#" class="large red button" onclick="return hideModal();">Let me free!</a>
                     </div>
                 </div>  

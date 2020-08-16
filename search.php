@@ -1,14 +1,20 @@
 <?php
 include("config.php");
 include("classes/functions.php");
-include("classes/SiteResultsProvider.php");
-include("classes/ImageResultsProvider.php");
+include("classes/results.php");
+#include("classes/SiteResultsProvider.php");
+#include("classes/ImageResultsProvider.php");
     if(isset($_GET["term"])){
         $term = $_GET["term"];
     }else{
+
         exit("please letter search > 0");
     }
-    $type = isset($_GET["type"]) ? $_GET["type"] : "all";
+    $inputType = detectInput($term);
+    if (!isset($_GET["type"])) {
+        header("Location: ./search.php?term=$term&type=$inputType");
+    }
+    $type = isset($_GET["type"]) ? $_GET["type"] : detectInput($term) ;
     $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 ?>
 <!DOCTYPE HTML>
@@ -28,7 +34,7 @@ include("classes/ImageResultsProvider.php");
         <div class="header">
             <div class="headerContent">
                 <div class="logoContainer">
-                    <a href="index.php">
+                    <a href="./">
                         <img src="assets/images/logo_ioc.png" alt="Google Title">
                     </a>
                 </div>
@@ -44,13 +50,13 @@ include("classes/ImageResultsProvider.php");
             </div>
             <div class="tabsContainer">
                 <ul class="tabList">
-                    <li class="<?php echo $type == 'all' ? 'active' : '' ?>">
-                        <a href="<?php echo "search.php?term=$term&type=all"; ?>">
-                            All
+                    <li class="<?php echo $type == 'text' ? 'active' : '' ?>">
+                        <a href="<?php echo "search.php?term=$term&type=text"; ?>">
+                            Text
                         </a>
                     </li>
-                    <li class="<?php echo $type == 'ipaddress' ? 'active' : '' ?>">
-                        <a href="<?php echo "search.php?term=$term&type=ipaddress"; ?>">
+                    <li class="<?php echo $type == 'IP' ? 'active' : '' ?>">
+                        <a href="<?php echo "search.php?term=$term&type=IP"; ?>">
                             IP Address
                         </a>
                     </li>
@@ -59,14 +65,19 @@ include("classes/ImageResultsProvider.php");
                             Domain
                         </a>
                     </li>
-                    <li class="<?php echo $type == 'mx' ? 'active' : '' ?>">
-                        <a href="<?php echo "search.php?term=$term&type=mx"; ?>">
-                            MX
+                    <li class="<?php echo $type == 'email' ? 'active' : '' ?>">
+                        <a href="<?php echo "search.php?term=$term&type=email"; ?>">
+                            e-Mail
                         </a>
                     </li>
                     <li class="<?php echo $type == 'hash' ? 'active' : '' ?>">
                         <a href="<?php echo "search.php?term=$term&type=hash"; ?>">
                             Hash
+                        </a>
+                    </li>
+                    <li class="<?php echo $type == 'process' ? 'active' : '' ?>">
+                        <a href="<?php echo "search.php?term=$term&type=process"; ?>">
+                            Process
                         </a>
                     </li>
                 </ul>
@@ -81,41 +92,34 @@ include("classes/ImageResultsProvider.php");
                 //     $resultsProvider = new ImageResultsProvider($con);
                 //     $pageLimit = 30;
                 // }
-                $results = getFileHashReputation($term);
-                echo "<div class='siteResults'><br>";
-                $url = $results['Virustotal'];
-                $title = "Virustotal";
-                $description = "Virustotal Result";
-                echo"
-                        <div class='resultContainer'>
-                            <h3 class='title'>
-                                <a class='result' href='$url'>
-                                    $title
-                                </a>
-                            </h3>
-                            <span class='url'>$url</span>
-                            <span class='description'>$description</span>
-                        </div>
-                    ";
-                $title = "IBM X-Force";
-                $url = $results[$title];
-                $description = "$title Result";
-                echo"
-                        <div class='resultContainer'>
-                            <h3 class='title'>
-                                <a class='result' href='$url'>
-                                    $title
-                                </a>
-                            </h3>
-                            <span class='url'>$url</span>
-                            <span class='description'>$description</span>
-                        </div>
-                    ";
-                echo "</div>";
+                echo "<div class='siteResults'><br>"; //search content start
+                
+                if ($type == "text") {
+                    # code...
+                }
+                elseif ($type == "hash") {
+                    getHashResults($term);
+                }
+                elseif ($type == "email") {
+                    # code...
+                }
+                elseif ($type == "domain") {
+                    # code...
+                }
+                elseif ($type == "process"){
+                    getProcessInformation($term);
+                }
+                else {
+                    # code...
+                }
+
+                
+
+
 
                 // $numResults = $resultsProvider->getNumResults($term);
                 #echo "<p class='resultsCount'>About $numResults results</p>"; DÜZELT BİTİNCE
-                echo "<p class='resultsCount'><b>".detectInput($term)."</b></p>";
+                # BURAYI UNUTMAAAAAA #echo "<p class='resultsCount'><b>".detectInput($term)."</b></p>";
                 // echo $resultsProvider->getResultsHtml($page, $pageLimit, $term);
             ?>
         </div>
